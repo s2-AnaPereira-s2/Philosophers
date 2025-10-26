@@ -12,24 +12,42 @@
 
 NAME = philo
 CC = cc
-CFLAGS = -Wall -Werror -Wextra
-CFILES = philo.c philo_utils.c main.c routines.c init.c clean.c
-OFILES = $(CFILES:.c=.o)
+CFLAGS = -Wall -Werror -Wextra -I.
+RM	= rm -f
+HEADER = philo.h
+SRC = ./src
+CFILES = \
+	$(SRC)/philo.c \
+	$(SRC)/philo_utils.c \
+	$(SRC)/main.c \
+	$(SRC)/routines.c \
+	$(SRC)/init.c \
+	$(SRC)/clean.c \
 
-.PHONY: all clean fclean re 
+OFILES = $(CFILES:%.c=%.o)
+
+GREEN		= \033[0;32m
+GREY		= \033[0;90m
+RED			= \033[0;31m
+RESET		= \033[0m
 
 all: $(NAME)
 
 $(NAME): $(OFILES) 
-	$(CC) $(CFLAGS) $(OFILES) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OFILES) -o $(NAME)
+	@echo "$(GREEN)Executable created: $(NAME)$(RESET)"
 
-%.o: %.c philo.h
-	$(CC) $(CFLAGS) -c $< -o $@
+%.o: %.c $(HEADER)
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OFILES)
+	@$(RM) $(OFILES)
+	@echo "$(RED)Cleaned object files.$(RESET)"
 
 fclean: clean
-	rm -f $(NAME)
+	@$(RM) $(NAME)
+	@echo "$(RED)Fully cleaned everything.$(RESET)"
 
 re: fclean all
+
+.PHONY: all clean fclean re 
