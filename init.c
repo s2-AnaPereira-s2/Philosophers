@@ -1,32 +1,9 @@
 #include "philo.h"
 
-
-int init_simulation(t_p *data)
+void init_philos(t_p *data)
 {
     int i;
     
-    data->start_time = get_time();
-    data->dead = 0;
-    data->forks = malloc(sizeof(pthread_mutex_t) * data->total_philos);
-    if (!data->forks)
-        return (0);
-    data->philos = malloc(sizeof(t_philo) * data->total_philos);
-    if (!data->philos)
-    {
-        free(data->forks);
-        return (0);
-    }
-    i = 0;
-    while (i < data->total_philos)
-    {
-        if (pthread_mutex_init(&data->forks[i], NULL) != 0)
-            return (0);
-        i++;
-    }
-    if (pthread_mutex_init(&data->print_mutex, NULL) != 0)
-        return (0);
-    if (pthread_mutex_init(&data->death_mutex, NULL) != 0)
-        return (0);
     i = 0;
     while (i < data->total_philos)
     {
@@ -41,6 +18,43 @@ int init_simulation(t_p *data)
             data->philos[i].right_fork = &data->forks[0];
         i++;
     }
+}
+
+int init_mutexes(t_p *data)
+{
+    int i;
+    
+    i = 0;
+    while (i < data->total_philos)
+    {
+        if (pthread_mutex_init(&data->forks[i], NULL) != 0)
+            return (0);
+        i++;
+    }
+    if (pthread_mutex_init(&data->print_mutex, NULL) != 0)
+        return (0);
+    if (pthread_mutex_init(&data->death_mutex, NULL) != 0)
+        return (0);
+    return (1);
+}
+
+int init_simulation(t_p *data)
+{
+    
+    data->start_time = get_time();
+    data->dead = 0;
+    data->forks = malloc(sizeof(pthread_mutex_t) * data->total_philos);
+    if (!data->forks)
+        return (0);
+    data->philos = malloc(sizeof(t_philo) * data->total_philos);
+    if (!data->philos)
+    {
+        free(data->forks);
+        return (0);
+    }
+    if (!init_mutexes(data))
+        return (0);
+    init_philos(data);
     return (1);
 }
 
