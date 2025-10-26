@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "philo.h"
+#include <sys/time.h>
 
 int check_args(int argc)
 {
@@ -27,21 +28,39 @@ int check_args(int argc)
     return (1);
 }
 
-int enough_philos(t_p *p)
+long get_time(void)
 {
-    if (p->total_philos < 2)
-    {
-        printf("%s", "You need at least 2 philosophers.\n");
-        return (0);
-    }
-    return (1);
+    struct timeval tv;
+    
+    gettimeofday(&tv, NULL);
+    return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
-int forks_available(t_p *p)
+void print_message(t_philo *philo, char *message)
 {
-    if (p->forks_num = p->forks_num - 2)
-        return (0);
-    return (1);
+    long current_time;
+    
+    pthread_mutex_lock(&philo->data->print_mutex);
+    pthread_mutex_lock(&philo->data->death_mutex);
+    if (!philo->data->dead)
+    {
+        current_time = get_time() - philo->data->start_time;
+        printf("%ld %d %s\n", current_time, philo->id, message);
+    }
+    pthread_mutex_unlock(&philo->data->death_mutex);
+    pthread_mutex_unlock(&philo->data->print_mutex);
+}
+
+int is_dead(t_philo *philo)
+{
+    pthread_mutex_lock(&philo->data->death_mutex);
+    if (philo->data->dead)
+    {
+        pthread_mutex_unlock(&philo->data->death_mutex);
+        return (1);
+    }
+    pthread_mutex_unlock(&philo->data->death_mutex);
+    return (0);
 }
 
 

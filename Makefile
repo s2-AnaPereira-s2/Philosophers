@@ -13,7 +13,7 @@
 NAME = philo
 CC = cc
 CFLAGS = -Wall -Werror -Wextra
-CFILES = philo.c checks.c
+CFILES = philo.c philo_utils.c main.c routines.c init.c clean.c
 OFILES = $(CFILES:.c=.o)
 
 .PHONY: all clean fclean re 

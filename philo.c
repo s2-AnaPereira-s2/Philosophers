@@ -12,27 +12,72 @@
 
 #include "philo.h"
 
-int main(int argc, char **argv)
+int all_philos_ate(t_p *data)
 {
-    t_p p;
+    int i;
+    int all_ate;
     
-    if (!check_args(argc))
-        return (0);  
-    p.total_philos = atoi(argv[1]);
-    p.tt_eat = atoi(argv[2]);
-    p.tt_sleep = atoi(argv[3]);
-    p.tt_die = atoi(argv[4]);
-    if (argc == 6)
-        p.total_meals = atoi(argv[5]);
-    else
-        p.total_meals = -1;
-    if (p.total_philos <= 0 || p.tt_eat <= 0 || p.tt_sleep <= 0 || p.tt_die <= 0 || (argc == 6 && p.total_meals <= 0))
+    if (data->total_meals <= 0)
+        return (0); 
+    i = 0;
+    all_ate = 1;
+    while (i < data->total_philos)
     {
-        printf("%s", "Invalid arguments\n");
-        return (0);
+        pthread_mutex_lock(&data->death_mutex);
+        if (data->philos[i].meals_eaten < data->total_meals)
+            all_ate = 0;
+        pthread_mutex_unlock(&data->death_mutex);
+        if (!all_ate)
+            return (0);
+        i++;
     }
-    if (!enough_philos(&p))
-        return (0);
-    p.forks_num = p.total_philos;
     return (1);
 }
+
+int check_philo_death(t_p *data, int i)
+{
+    long current_time;
+    long time_since_last_meal;
+    
+    current_time = get_time();
+    pthread_mutex_lock(&data->death_mutex);
+    time_since_last_meal = current_time - data->philos[i].last_meal_time;
+    pthread_mutex_unlock(&data->death_mutex);
+    if (time_since_last_meal > data->tt_die)
+    {
+        pthread_mutex_lock(&data->death_mutex);
+        data->dead = 1;
+        pthread_mutex_unlock(&data->death_mutex);
+        pthread_mutex_lock(&data->print_mutex);
+        printf("%ld %d died\n", current_time - data->start_time, data->philos[i].id);
+        pthread_mutex_unlock(&data->print_mutex);
+        return (1);
+    }
+    return (0);
+}
+
+void philos_check(t_p *data)
+{
+    int i;
+    
+    while (1)
+    {
+        i = 0;
+        while (i < data->total_philos)
+        {
+            if (check_philo_death(data, i))
+                return ;
+            i++;
+        }
+        if (all_philos_ate(data))
+        {
+            pthread_mutex_lock(&data->death_mutex);
+            data->dead = 1;
+            pthread_mutex_unlock(&data->death_mutex);
+            return ;
+        }
+        usleep(1000);
+    }
+}
+
+
