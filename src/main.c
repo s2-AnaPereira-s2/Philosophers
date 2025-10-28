@@ -37,6 +37,7 @@ int	main(int argc, char **argv)
 	if (!start_threads(&p))
 		return (1);
 	philos_check(&p);
+	usleep(1000);
 	cleanup(&p);
 	return (0);
 }

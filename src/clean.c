@@ -19,12 +19,6 @@ void	cleanup(t_p *data)
 	i = 0;
 	while (i < data->total_philos)
 	{
-		pthread_join(data->philos[i].thread, NULL);
-		i++;
-	}
-	i = 0;
-	while (i < data->total_philos)
-	{
 		pthread_mutex_destroy(&data->forks[i]);
 		i++;
 	}

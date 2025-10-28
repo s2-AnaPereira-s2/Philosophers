@@ -79,6 +79,7 @@ int	start_threads(t_p *data)
 		if (pthread_create(&data->philos[i].thread, NULL, 
 				philo_routine, &data->philos[i]) != 0)
 			return (0);
+		pthread_detach(data->philos[i].thread);
 		i++;
 	}
 	return (1);
