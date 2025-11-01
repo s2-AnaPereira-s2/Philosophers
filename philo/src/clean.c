@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ana-pdos <ana-pdos@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: ana-pdos <ana-pdos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 12:38:53 by ana-pdos          #+#    #+#             */
-/*   Updated: 2025/10/27 12:40:50 by ana-pdos         ###   ########.fr       */
+/*   Updated: 2025/10/29 18:45:54 by ana-pdos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@ void	cleanup(t_p *data)
 {
 	int	i;
 
+	i = 0;
+	while (i < data->total_philos)
+	{
+		pthread_join(data->philos[i].thread, NULL);
+		i++;
+	}
 	i = 0;
 	while (i < data->total_philos)
 	{

@@ -6,7 +6,7 @@
 /*   By: ana-pdos <ana-pdos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 15:49:38 by ana-pdos          #+#    #+#             */
-/*   Updated: 2025/10/27 14:41:34 by ana-pdos         ###   ########.fr       */
+/*   Updated: 2025/10/29 18:52:11 by ana-pdos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,6 @@ int		init_simulation(t_p *p);
 int		start_threads(t_p *p);
 void	philos_check(t_p *p);
 void	cleanup(t_p *p);
+void	die_lower_eat(t_philo *philo);
 
 #endif

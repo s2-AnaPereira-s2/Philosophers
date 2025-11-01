@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ana-pdos <ana-pdos@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: ana-pdos <ana-pdos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 12:46:16 by ana-pdos          #+#    #+#             */
-/*   Updated: 2025/10/27 14:08:17 by ana-pdos         ###   ########.fr       */
+/*   Updated: 2025/10/29 16:14:18 by ana-pdos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int	main(int argc, char **argv)
 	if (!start_threads(&p))
 		return (1);
 	philos_check(&p);
-	usleep(1000);
 	cleanup(&p);
 	return (0);
 }

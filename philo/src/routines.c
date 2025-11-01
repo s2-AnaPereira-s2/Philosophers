@@ -6,7 +6,7 @@
 /*   By: ana-pdos <ana-pdos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 13:02:37 by ana-pdos          #+#    #+#             */
-/*   Updated: 2025/10/27 18:14:22 by ana-pdos         ###   ########.fr       */
+/*   Updated: 2025/10/29 18:51:20 by ana-pdos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void	eat(t_philo *philo)
 		philo->meals_eaten++;
 		pthread_mutex_unlock(&philo->data->death_mutex);
 		print_message(philo, "is eating");
+		if (philo->data->tt_die <= philo->data->tt_eat)
+			return (die_lower_eat(philo));
 		if (is_dead(philo))
 		{
 			pthread_mutex_unlock(philo->left_fork);
@@ -100,7 +102,7 @@ void	*philo_routine(void *arg)
 
 	philo = (t_philo *)arg;
 	if (philo->id % 2 == 0)
-		usleep(philo->data->tt_eat * 1000);
+		usleep(1000);
 	while (!is_dead(philo))
 	{
 		eat(philo);

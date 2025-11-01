@@ -6,7 +6,7 @@
 /*   By: ana-pdos <ana-pdos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 12:50:05 by ana-pdos          #+#    #+#             */
-/*   Updated: 2025/10/27 15:00:58 by ana-pdos         ###   ########.fr       */
+/*   Updated: 2025/10/29 16:57:26 by ana-pdos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void	philos_check(t_p *data)
 		{
 			pthread_mutex_lock(&data->death_mutex);
 			data->dead = 1;
+			printf("%s", "All philosophers have eaten the required meals\n");
 			pthread_mutex_unlock(&data->death_mutex);
 			return ;
 		}

@@ -6,7 +6,7 @@
 /*   By: ana-pdos <ana-pdos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 12:41:00 by ana-pdos          #+#    #+#             */
-/*   Updated: 2025/10/27 15:24:35 by ana-pdos         ###   ########.fr       */
+/*   Updated: 2025/10/29 16:16:30 by ana-pdos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ int	start_threads(t_p *data)
 		if (pthread_create(&data->philos[i].thread, NULL, 
 				philo_routine, &data->philos[i]) != 0)
 			return (0);
-		pthread_detach(data->philos[i].thread);
 		i++;
 	}
 	return (1);
